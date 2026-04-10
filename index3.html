@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartEd | AI-Powered Learning</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        /* The exact gradient from your workspace banner */
+        .bg-smarted-gradient { 
+            background: linear-gradient(90deg, #6366f1 0%, #a855f7 50%, #ec4899 100%); 
+        }
+        .text-gradient { 
+            background: linear-gradient(90deg, #6366f1, #a855f7); 
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent; 
+        }
+        .shadow-soft { box-shadow: 0 10px 40px -10px rgba(0,0,0,0.05); }
+    </style>
+</head>
+<body class="bg-white text-slate-900 antialiased">
+
+    <nav class="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md border-b border-slate-100">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-smarted-gradient rounded-xl flex items-center justify-center shadow-lg shadow-purple-500/20">
+                    <i data-lucide="sparkles" class="text-white w-6 h-6"></i>
+                </div>
+                <span class="text-2xl font-extrabold tracking-tight text-slate-900">SmartEd</span>
+            </div>
+            
+            <div class="hidden md:flex items-center gap-10 text-sm font-semibold text-slate-500">
+                <a href="#" class="hover:text-purple-600 transition-colors">Features</a>
+                <a href="#" class="hover:text-purple-600 transition-colors">Curriculum</a>
+                <a href="#" class="hover:text-purple-600 transition-colors">Pricing</a>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <button class="bg-smarted-gradient px-6 py-2.5 rounded-full text-sm font-bold text-white shadow-lg shadow-purple-500/25 hover:opacity-90 transition-all active:scale-95">
+                    Dashboard
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <section class="pt-40 pb-24 px-6 relative overflow-hidden">
+        <div class="absolute top-0 right-0 -z-10 w-[500px] h-[500px] bg-purple-100/50 rounded-full blur-3xl opacity-50 translate-x-1/2 -translate-y-1/2"></div>
+        
+        <div class="max-w-5xl mx-auto text-center">
+            <h1 class="text-6xl md:text-7xl font-extrabold text-slate-900 mb-8 tracking-tight leading-[1.1]">
+                Master any skill with <br/>
+                <span class="text-gradient">Personalized AI Courses</span>
+            </h1>
+            <p class="text-lg md:text-xl text-slate-500 mb-12 max-w-2xl mx-auto leading-relaxed">
+                SmartEd transforms complex topics into structured learning paths. From AI Curriculum to Video Curation—build your future, one course at a time.
+            </p>
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-5">
+                <button class="w-full sm:w-auto bg-smarted-gradient px-10 py-4 rounded-2xl font-bold text-white shadow-2xl shadow-purple-500/30 hover:-translate-y-1 transition-all">
+                    Get Started Free
+                </button>
+                <button class="w-full sm:w-auto px-10 py-4 rounded-2xl font-bold border-2 border-slate-100 hover:bg-slate-50 transition-colors flex items-center justify-center gap-2 text-slate-600">
+                    <i data-lucide="play-circle" class="w-5 h-5"></i> Watch Demo
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-24 px-6 bg-slate-50/50">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid md:grid-cols-3 gap-10">
+                <div class="p-10 rounded-3xl bg-white border border-slate-100 shadow-soft hover:border-purple-200 transition-all group">
+                    <div class="w-14 h-14 rounded-2xl bg-indigo-50 flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
+                        <i data-lucide="cpu" class="text-indigo-600 w-7 h-7"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-slate-900 mb-4">AI Curriculum</h3>
+                    <p class="text-slate-500 leading-relaxed">Deep-learning algorithms that structure complex topics into easy-to-follow modules.</p>
+                </div>
+
+                <div class="p-10 rounded-3xl bg-white border border-slate-100 shadow-soft hover:border-purple-200 transition-all group">
+                    <div class="w-14 h-14 rounded-2xl bg-purple-50 flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
+                        <i data-lucide="video" class="text-purple-600 w-7 h-7"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-slate-900 mb-4">Video Curation</h3>
+                    <p class="text-slate-500 leading-relaxed">Auto-selects high-quality video content from the web to complement your theory.</p>
+                </div>
+
+                <div class="p-10 rounded-3xl bg-white border border-slate-100 shadow-soft hover:border-purple-200 transition-all group">
+                    <div class="w-14 h-14 rounded-2xl bg-pink-50 flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
+                        <i data-lucide="trending-up" class="text-pink-600 w-7 h-7"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-slate-900 mb-4">Progress Tracking</h3>
+                    <p class="text-slate-500 leading-relaxed">Visual progress bars and analytics (just like your dashboard) to keep you motivated.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-24 px-6 text-center">
+        <div class="max-w-3xl mx-auto bg-slate-900 rounded-[3rem] p-12 md:p-20 relative overflow-hidden">
+            <div class="absolute -top-24 -left-24 w-64 h-64 bg-purple-500/30 rounded-full blur-3xl"></div>
+            
+            <h2 class="text-4xl font-extrabold text-white mb-6 relative">Ready to start your journey?</h2>
+            <p class="text-slate-400 mb-10 text-lg relative">Join thousands of students building their own AI-curated workspaces.</p>
+            
+            <div class="flex flex-col sm:flex-row gap-4 justify-center relative">
+                <button class="bg-white text-slate-900 px-8 py-4 rounded-2xl font-bold hover:bg-slate-100 transition-colors">
+                    Sign Up Now
+                </button>
+                <button class="bg-transparent border border-slate-700 text-white px-8 py-4 rounded-2xl font-bold hover:bg-slate-800 transition-colors">
+                    Go to Workspace
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-12 border-t border-slate-100">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="flex items-center gap-2">
+                <span class="text-xl font-bold text-slate-900">SmartEd</span>
+            </div>
+            <p class="text-slate-400 text-sm">© 2026 SmartEd AI Platform. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
