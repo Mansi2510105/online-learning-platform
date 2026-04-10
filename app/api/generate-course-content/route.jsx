@@ -1,9 +1,12 @@
 import { NextResponse } from "next/server";
-import { ai } from "../generate-course-layout/route"
+import { GoogleGenerativeAI } from "@google/generative-ai";
 import axios from "axios";
 import { db } from '../../../config/db';
 import { coursesTable } from "../../../config/schema";
 import { eq } from "drizzle-orm";
+
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+const ai = genAI;
 
 const PROMPT = `Depends on Chapter name and Topic Generate content for each topic in HTML
 and give response in JSON format.
