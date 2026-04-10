@@ -4,9 +4,7 @@ import { eq } from 'drizzle-orm';
 import { auth, currentUser } from '@clerk/nextjs/server';
 import { NextResponse } from 'next/server';
 // import axios from 'axios'
-import {
-    GoogleGenAI,
-} from '@google/genai';
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const PROMPT = `Genrate Learning Course depends on following details. In which Make sure to add Course Name, Description, Chapter Name, Image Prompt (Course Banner Image Prompt. Generate only one imagePrompt for the entire course banner. Do not create separate image prompts for each chapter. Create a modern, flat-style 2D digital illustration that visually represents the course titled "user Course". Include symbolic elements directly related to the course subject, such as programming icons, code snippets, terminal windows, or IDE mockups for tech courses. Avoid generic human figures. Use UI/UX elements like mockup screens, text blocks, icons, buttons, and creative workspace tools. Use a vibrant color palette (blues, purples, oranges) with a clean, professional look. The illustration should feel creative, tech-savvy, and educational, ideal for visualizing concepts in user Course) for Course Banner in 3d format, Topic under each chapters , Duration for each chapters etc, in JSON format only
 
@@ -35,7 +33,7 @@ Schema:
 
 ,User Input: `
 
-export const ai = new GoogleGenAI({
+export const ai = new GoogleGenerativeAI({
     apiKey: process.env.GEMINI_API_KEY,
   });
 
