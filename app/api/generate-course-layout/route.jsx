@@ -33,7 +33,7 @@ Schema:
 
 ,User Input: `
 
-export const ai = new GoogleGenerativeAI({
+const ai = new GoogleGenerativeAI({
     apiKey: process.env.GEMINI_API_KEY,
   });
 
