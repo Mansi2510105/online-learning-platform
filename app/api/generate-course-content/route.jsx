@@ -23,7 +23,7 @@ export async function POST(req) {
 
         const promises = courseJson?.chapters?.map(async (chapter) => {
             const model = genAI.getGenerativeModel({
-                model: "gemini-3-flash-preview",
+                // model: "gemini-3-flash-preview",
                 generationConfig: { responseMimeType: "application/json" },
             });
 

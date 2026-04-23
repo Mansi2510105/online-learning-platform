@@ -88,12 +88,16 @@ export default function Home() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4">
+              <Link href="/workspace">
               <button className="bg-gradient-brand px-8 py-4 rounded-xl text-white font-bold shadow-xl shadow-indigo-500/30 hover:shadow-indigo-500/50 hover:-translate-y-1 transition-all flex items-center justify-center gap-2">
                 Get Started Free <ArrowRight className="w-5 h-5" />
               </button>
+              </Link>
+              <Link href="/how-it-works">
               <button className="bg-white px-8 py-4 rounded-xl text-slate-700 font-bold border border-slate-200 hover:bg-slate-50 hover:border-slate-300 transition-all flex items-center justify-center gap-2 shadow-sm">
                 <PlayCircle className="w-5 h-5 text-indigo-600" /> Watch Demo
               </button>
+              </Link>
             </div>
 
             <div className="mt-10 flex items-center gap-4 text-sm font-medium text-slate-500">
