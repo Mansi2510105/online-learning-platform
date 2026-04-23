@@ -6,7 +6,6 @@ import { coursesTable } from "../../../config/schema";
 import { eq } from "drizzle-orm";
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-const ai = genAI;
 
 const PROMPT = `Depends on Chapter name and Topic Generate content for each topic in HTML
 and give response in JSON format.
@@ -16,90 +15,70 @@ chapterName:<>,
 topic:<>,
 content:<>
 }
-}
-: User Input:`
-
+}: User Input:`;
 
 export async function POST(req) {
-    const { courseJson, courseTitle, courseId } = await req.json();
+    try {
+        const { courseJson, courseTitle, courseId } = await req.json();
 
-    const promises = courseJson?.chapters?.map(async (chapter) => {
-        const config = {
-            thinkingConfig: {
-                thinkingBudget: 0,
-            },
-            
-        };
-        const model = 'gemini-flash-lite-latest';
-        const contents = [
-            {
-                role: 'user',
-                parts: [
-                    {
-                        text: PROMPT+JSON.stringify(chapter),
-                    },
-                ],
-            },
-        ];
+        const promises = courseJson?.chapters?.map(async (chapter) => {
+            const model = genAI.getGenerativeModel({
+                model: "gemini-3-flash-preview",
+                generationConfig: { responseMimeType: "application/json" },
+            });
 
-        const response = await ai.models.generateContent({
-            model,
-            config,
-            contents,
+            const result = await model.generateContent(PROMPT + JSON.stringify(chapter));
+            const JSONResp = JSON.parse(result.response.text());
+
+            const youtubeData = await GetYoutubeVideo(chapter?.chapterName);
+
+            console.log({
+                youtubeVideo: youtubeData,
+                courseData: JSONResp
+            });
+
+            return {
+                youtubeVideo: youtubeData,
+                courseData: JSONResp
+            };
         });
 
-        // console.log(response.candidates[0].content.parts[0].text);
-        const RawResp = response.candidates[0].content.parts[0].text
-        const RawJson = RawResp.replace('```json', '').replace('```', '');
-        const JSONResp = JSON.parse(RawJson);
+        const CourseContent = await Promise.all(promises);
 
-        //GET Youtube Videos
+        await db.update(coursesTable).set({
+            courseContent: CourseContent
+        }).where(eq(coursesTable.cid, courseId));
 
-        const youtubeData = await GetYoutubeVideo(chapter?.chapterName);
-        console.log({
-            youtubeVideo: youtubeData,
-            courseData: JSONResp
-        })
-        return {
-            youtubeVideo: youtubeData,
-            courseData: JSONResp
-        };
-    })
+        return NextResponse.json({
+            courseName: courseTitle,
+            CourseContent: CourseContent
+        });
 
-    const CourseContent = await Promise.all(promises)
-
-    //Save to DB
-    const dbResponse = await db.update(coursesTable).set({
-        courseContent: CourseContent
-    }).where(eq(coursesTable.cid, courseId));
-
-    return NextResponse.json({
-        courseName: courseTitle,
-        CourseContent: CourseContent
-    })
-    
+    } catch (error) {
+        console.error("Error in generate-course-content:", error);
+        return NextResponse.json({ error: error.message }, { status: 500 });
+    }
 }
 
+const YOUTUBE_BASE_URL = 'https://www.googleapis.com/youtube/v3/search';
 
-const YOUTUBE_BASE_URL ='https://www.googleapis.com/youtube/v3/search'
-const GetYoutubeVideo = async (topic)=>{
+const GetYoutubeVideo = async (topic) => {
     const params = {
         part: 'snippet',
         q: topic,
-        maxReults: 4,
+        maxResults: 4,
         type: 'video',
         key: process.env.YOUTUBE_API_KEY
-    }
+    };
+
     const resp = await axios.get(YOUTUBE_BASE_URL, { params });
     const youtubeVideoListResp = resp.data.items;
-    const youtubeVideoList = [];
-    youtubeVideoListResp.forEach(item => {
-        const data={
-            videoId:item.id?.videoId,
-            title:item?.snippet?.title
-        }
-        youtubeVideoList.push(data);
-    });
-    console.log("youtubeVideoList", youtubeVideoList)
+
+    const youtubeVideoList = youtubeVideoListResp.map(item => ({
+        videoId: item.id?.videoId,
+        title: item?.snippet?.title
+    }));
+
+    console.log("youtubeVideoList", youtubeVideoList);
     return youtubeVideoList;
-}
+};

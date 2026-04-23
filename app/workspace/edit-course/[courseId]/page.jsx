@@ -33,15 +33,7 @@ function EditCourse({viewCourse=false}) {
     useEffect(()=>{
         GetCourseInfo();
     }, [])
-
-    // const GetCourseInfo = async ()=>{
-    //     setLoading(true);
-    //     const result = await axios.get('/api/courses?courseId='+courseId)
-    //     console.log(result.data);
-    //     setLoading(false);
-    //     setCourse(result.data)
-    // }
-
+    
     const GetCourseInfo = async () => {
     setLoading(true);
     try {

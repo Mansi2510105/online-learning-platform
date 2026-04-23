@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
   Dialog,
   DialogContent,
@@ -18,14 +18,13 @@ import {
 } from "../../../components/ui/select"
 import { Loader2Icon, Sparkle } from 'lucide-react'
 import { Button } from '../../../components/ui/button'
-import { useState } from 'react'
 import { Textarea } from '../../../components/ui/textarea'
 import axios from 'axios'
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from 'uuid'
 import { useRouter } from 'next/navigation'
+import { toast } from 'sonner' // or wherever your toast comes from
 
 function AddNewCourseDialog({ children }) {
-
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
@@ -38,35 +37,30 @@ function AddNewCourseDialog({ children }) {
   const router = useRouter();
 
   const onHandleInputChange = (field, value) => {
-    setFormData(prev => ({
-      ...prev,
-      [field]: value
-    }));
-    console.log(formData);
-  }
+    setFormData(prev => ({ ...prev, [field]: value }));
+  };
 
   const onGenerate = async () => {
-    console.log(formData);
+    console.log("Submitting formData:", formData);
     const courseId = uuidv4();
     try {
-      setLoading(true)
+      setLoading(true);
       const result = await axios.post('/api/generate-course-layout', {
         ...formData,
         courseId: courseId
       });
-      console.log(result.data);
-      if(result.data.resp=='limit exceed'){
-        toast.warning('Please subscribe to plan!')
-        router.push('/workspace/billing')
-      }
-      setLoading(false)
+      console.log("Response:", result.data);
+      setLoading(false);
+
+      // Redirect to edit page after successful save
       router.push('/workspace/edit-course/' + result.data?.courseId);
+
+    } catch (e) {
+      setLoading(false);
+      console.error("Error generating course:", e);
+      // toast.error("Failed to generate course. Please try again.");
     }
-    catch(e){
-      setLoading(false)
-      console.log(e)
-    }
-  }
+  };
 
   return (
     <Dialog>
@@ -78,25 +72,37 @@ function AddNewCourseDialog({ children }) {
             <div className='flex flex-col gap-4 mt-3'>
               <div>
                 <label>Course Name</label>
-                <Input placeholder='Course Name' onChange={(event) => onHandleInputChange('name', event?.target.value)} />
+                <Input
+                  placeholder='Course Name'
+                  onChange={(e) => onHandleInputChange('name', e.target.value)}
+                />
               </div>
               <div>
                 <label>Course Description (Optional)</label>
-                <Textarea placeholder='Course Description' onChange={(event) => onHandleInputChange('description', event?.target.value)} />
+                <Textarea
+                  placeholder='Course Description'
+                  onChange={(e) => onHandleInputChange('description', e.target.value)}
+                />
               </div>
               <div>
                 <label>No. of chapters</label>
-                <Input placeholder='No. of chapters' type='number' onChange={(event) => onHandleInputChange('noOfChapters', event?.target.value)} />
+                <Input
+                  placeholder='No. of chapters'
+                  type='number'
+                  onChange={(e) => onHandleInputChange('noOfChapters', Number(e.target.value))}
+                />
               </div>
-              <div className='flex gap-3 item-center'>
+              <div className='flex gap-3 items-center'>
                 <label>Include Video</label>
-                <Switch onCheckedChange={() => onHandleInputChange('includeVideo', !formData?.includeVideo)} />
+                <Switch
+                  onCheckedChange={(checked) => onHandleInputChange('includeVideo', checked)}
+                />
               </div>
               <div>
                 <label>Difficulty level</label>
-                <Select className='mt-1' onValueChange={(value) => onHandleInputChange('level', value)}>
+                <Select onValueChange={(value) => onHandleInputChange('level', value)}>
                   <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Theme" />
+                    <SelectValue placeholder="Select level" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="beginner">Beginner</SelectItem>
@@ -107,19 +113,23 @@ function AddNewCourseDialog({ children }) {
               </div>
               <div>
                 <label>Category</label>
-                <Input placeholder="Category (Seperated by Comma)" onChange={(event) => onHandleInputChange('category', event?.target.value)} />
+                <Input
+                  placeholder="Category (Separated by Comma)"
+                  onChange={(e) => onHandleInputChange('category', e.target.value)}
+                />
               </div>
               <div className='mt-5'>
-                <Button className={'w-full'} onClick={onGenerate} disabled={loading}>
-                  {loading ? <Loader2Icon className='animate-spin' /> :
-                    <Sparkle />}Generate Course</Button>
+                <Button className='w-full' onClick={onGenerate} disabled={loading}>
+                  {loading ? <Loader2Icon className='animate-spin mr-2' /> : <Sparkle className='mr-2' />}
+                  Generate Course
+                </Button>
               </div>
             </div>
           </DialogDescription>
         </DialogHeader>
       </DialogContent>
     </Dialog>
-  )
+  );
 }
 
-export default AddNewCourseDialog
+export default AddNewCourseDialog;
